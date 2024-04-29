@@ -3,35 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <div id="calculator">
-        <input id="display" readonly>
-        <div id="keys">
-            <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('*')" class="operator-btn">*</button>
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
-            <button onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            <button onclick="calculate('.')">=</button>
-            <button onclick="clearDisplay('C')" class="operator-btn">C</button>
+    <div class="calculator">
+        <div class="calculator__wrap">
+            <div class="calculator__display" id="display">0</div>
+            <div class="calculator__functions">
+                <button value="clear" class="btn--opaque" onclick="clearDisplay()">AC</button>
+                <button value="pos-neg" class="btn--opaque" onclick="toggleSign()">+/-</button>
+                <button value="%" class="btn--opaque" onclick="appendOperator('%')">%</button>
+                <button value="/" class="btn--opaque" onclick="appendOperator('/')">/</button>
+                <button value="7" onclick="appendToDisplay('7')">7</button>
+                <button value="8" onclick="appendToDisplay('8')">8</button>
+                <button value="9" onclick="appendToDisplay('9')">9</button>
+                <button value="*" class="btn--opaque" onclick="appendOperator('*')">*</button>
+                <button value="4" onclick="appendToDisplay('4')">4</button>
+                <button value="5" onclick="appendToDisplay('5')">5</button>
+                <button value="6" onclick="appendToDisplay('6')">6</button>
+                <button value="-" class="btn--opaque" onclick="appendOperator('-')">-</button>
+                <button value="1" onclick="appendToDisplay('1')">1</button>
+                <button value="2" onclick="appendToDisplay('2')">2</button>
+                <button value="3" onclick="appendToDisplay('3')">3</button>
+                <button value="+" class="btn--opaque" onclick="appendOperator('+')">+</button>
+                <button value="0" class="btn--large" onclick="appendToDisplay('0')">0</button>
+                <button value="." onclick="appendDot()">.</button>
+                <button value="=" class="btn--opaque" onclick="calculate()">=</button>
+            </div>
         </div>
     </div>
 
+    <script>
+        let display = document.getElementById('display');
 
-    <script src="script.js"></script>
+        function appendToDisplay(value) {
+            if (display.textContent === '0' && value !== '.') {
+                display.textContent = value;
+            } else {
+                display.textContent += value;
+            }
+        }
+
+        function appendOperator(operator) {
+            if (display.textContent.slice(-1).match(/[+\-*/%]/)) {
+                display.textContent = display.textContent.slice(0, -1) + operator;
+            } else {
+                display.textContent += operator;
+            }
+        }
+
+        function appendDot() {
+            if (!display.textContent.includes('.')) {
+                display.textContent += '.';
+            }
+        }
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function toggleSign() {
+            display.textContent = (parseFloat(display.textContent) * -1).toString();
+        }
+
+        function calculate() {
+            try {
+                display.textContent = eval(display.textContent);
+            } catch (error) {
+                display.textContent = 'Error';
+            }
+        }
+    </script>
 </body>
 </html>
